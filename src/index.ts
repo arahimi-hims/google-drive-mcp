@@ -358,7 +358,7 @@ const AddGoogleSheetTabSchema = z.object({
 const UpdateGoogleSheetSchema = z.object({
   spreadsheetId: z.string().min(1, "Spreadsheet ID is required"),
   range: z.string().min(1, "Range is required"),
-  data: z.array(z.array(z.string()))
+  data: z.any()
 });
 
 const GetGoogleSheetContentSchema = z.object({
@@ -765,7 +765,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
-        name: "search",
+        name: "gdrive_search",
         description: "Search for files in Google Drive",
         inputSchema: {
           type: "object",
@@ -778,7 +778,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         },
       },
       {
-        name: "uploadFile",
+        name: "gdrive_uploadFile",
         description: "Upload a file from the local filesystem to Google Drive",
         inputSchema: {
           type: "object",
@@ -792,7 +792,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "createTextFile",
+        name: "gdrive_createTextFile",
         description: "Create a new text or markdown file",
         inputSchema: {
           type: "object",
@@ -805,7 +805,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "updateTextFile",
+        name: "gdrive_updateTextFile",
         description: "Update an existing text or markdown file",
         inputSchema: {
           type: "object",
@@ -818,7 +818,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "createFolder",
+        name: "gdrive_createFolder",
         description: "Create a new folder in Google Drive",
         inputSchema: {
           type: "object",
@@ -830,7 +830,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "listFolder",
+        name: "gdrive_listFolder",
         description: "List contents of a folder (defaults to root)",
         inputSchema: {
           type: "object",
@@ -842,7 +842,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "deleteItem",
+        name: "gdrive_deleteItem",
         description: "Move a file or folder to trash (can be restored from Google Drive trash)",
         inputSchema: {
           type: "object",
@@ -853,7 +853,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "renameItem",
+        name: "gdrive_renameItem",
         description: "Rename a file or folder",
         inputSchema: {
           type: "object",
@@ -865,7 +865,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "moveItem",
+        name: "gdrive_moveItem",
         description: "Move a file or folder",
         inputSchema: {
           type: "object",
@@ -877,7 +877,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "createGoogleDoc",
+        name: "gdrive_createGoogleDoc",
         description: "Create a new Google Doc",
         inputSchema: {
           type: "object",
@@ -890,7 +890,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "updateGoogleDoc",
+        name: "gdrive_updateGoogleDoc",
         description: "Update an existing Google Doc",
         inputSchema: {
           type: "object",
@@ -902,7 +902,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "createGoogleSheet",
+        name: "gdrive_createGoogleSheet",
         description: "Create a new Google Sheet",
         inputSchema: {
           type: "object",
@@ -919,7 +919,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "addGoogleSheetTab",
+        name: "gdrive_addGoogleSheetTab",
         description: "Add a new tab to a Google Sheet",
         inputSchema: {
           type: "object",
@@ -931,7 +931,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "updateGoogleSheet",
+        name: "gdrive_updateGoogleSheet",
         description: "Update an existing Google Sheet",
         inputSchema: {
           type: "object",
@@ -947,7 +947,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "getGoogleSheetContent",
+        name: "gdrive_getGoogleSheetContent",
         description: "Get content of a Google Sheet with cell information",
         inputSchema: {
           type: "object",
@@ -959,7 +959,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "formatGoogleSheetCells",
+        name: "gdrive_formatGoogleSheetCells",
         description: "Format cells in a Google Sheet (background, borders, alignment)",
         inputSchema: {
           type: "object",
@@ -999,7 +999,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "formatGoogleSheetText",
+        name: "gdrive_formatGoogleSheetText",
         description: "Apply text formatting to cells in a Google Sheet",
         inputSchema: {
           type: "object",
@@ -1027,7 +1027,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "formatGoogleSheetNumbers",
+        name: "gdrive_formatGoogleSheetNumbers",
         description: "Apply number formatting to cells in a Google Sheet",
         inputSchema: {
           type: "object",
@@ -1049,7 +1049,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "setGoogleSheetBorders",
+        name: "gdrive_setGoogleSheetBorders",
         description: "Set borders for cells in a Google Sheet",
         inputSchema: {
           type: "object",
@@ -1083,7 +1083,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "mergeGoogleSheetCells",
+        name: "gdrive_mergeGoogleSheetCells",
         description: "Merge cells in a Google Sheet",
         inputSchema: {
           type: "object",
@@ -1100,7 +1100,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "addGoogleSheetConditionalFormat",
+        name: "gdrive_addGoogleSheetConditionalFormat",
         description: "Add conditional formatting to a Google Sheet",
         inputSchema: {
           type: "object",
@@ -1155,7 +1155,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "createGoogleSlides",
+        name: "gdrive_createGoogleSlides",
         description: "Create a new Google Slides presentation",
         inputSchema: {
           type: "object",
@@ -1178,7 +1178,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "updateGoogleSlides",
+        name: "gdrive_updateGoogleSlides",
         description: "Update an existing Google Slides presentation",
         inputSchema: {
           type: "object",
@@ -1200,7 +1200,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "formatGoogleDocText",
+        name: "gdrive_formatGoogleDocText",
         description: "Apply text formatting to a range in a Google Doc",
         inputSchema: {
           type: "object",
@@ -1228,7 +1228,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "formatGoogleDocParagraph",
+        name: "gdrive_formatGoogleDocParagraph",
         description: "Apply paragraph formatting to a range in a Google Doc",
         inputSchema: {
           type: "object",
@@ -1256,7 +1256,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "getGoogleDocContent",
+        name: "gdrive_getGoogleDocContent",
         description: "Get content of a Google Doc with text indices for formatting",
         inputSchema: {
           type: "object",
@@ -1267,7 +1267,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "getGoogleSlidesContent",
+        name: "gdrive_getGoogleSlidesContent",
         description: "Get content of Google Slides with element IDs for formatting",
         inputSchema: {
           type: "object",
@@ -1279,7 +1279,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "formatGoogleSlidesText",
+        name: "gdrive_formatGoogleSlidesText",
         description: "Apply text formatting to elements in Google Slides",
         inputSchema: {
           type: "object",
@@ -1309,7 +1309,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "formatGoogleSlidesParagraph",
+        name: "gdrive_formatGoogleSlidesParagraph",
         description: "Apply paragraph formatting to text in Google Slides",
         inputSchema: {
           type: "object",
@@ -1334,7 +1334,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "styleGoogleSlidesShape",
+        name: "gdrive_styleGoogleSlidesShape",
         description: "Style shapes in Google Slides",
         inputSchema: {
           type: "object",
@@ -1374,7 +1374,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "setGoogleSlidesBackground",
+        name: "gdrive_setGoogleSlidesBackground",
         description: "Set background color for slides",
         inputSchema: {
           type: "object",
@@ -1400,7 +1400,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "createGoogleSlidesTextBox",
+        name: "gdrive_createGoogleSlidesTextBox",
         description: "Create a text box in Google Slides",
         inputSchema: {
           type: "object",
@@ -1420,7 +1420,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "createGoogleSlidesShape",
+        name: "gdrive_createGoogleSlidesShape",
         description: "Create a shape in Google Slides",
         inputSchema: {
           type: "object",
@@ -1452,7 +1452,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
-        name: "getFileComments",
+        name: "gdrive_getFileComments",
         description: "Get comments from a Google Drive file (including Google Docs, Sheets, Slides, and uploaded files)",
         inputSchema: {
           type: "object",
@@ -1487,7 +1487,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
   try {
     switch (request.params.name) {
-      case "search": {
+      case "gdrive_search": {
         const validation = SearchSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -1520,7 +1520,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "uploadFile": {
+      case "gdrive_uploadFile": {
         const validation = UploadFileSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -1567,7 +1567,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "createTextFile": {
+      case "gdrive_createTextFile": {
         const validation = CreateTextFileSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -1618,7 +1618,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "updateTextFile": {
+      case "gdrive_updateTextFile": {
         const validation = UpdateTextFileSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -1664,7 +1664,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "createFolder": {
+      case "gdrive_createFolder": {
         const validation = CreateFolderSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -1704,7 +1704,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "listFolder": {
+      case "gdrive_listFolder": {
         const validation = ListFolderSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -1741,7 +1741,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "deleteItem": {
+      case "gdrive_deleteItem": {
         const validation = DeleteItemSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -1766,7 +1766,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "renameItem": {
+      case "gdrive_renameItem": {
         const validation = RenameItemSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -1795,7 +1795,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "moveItem": {
+      case "gdrive_moveItem": {
         const validation = MoveItemSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -1838,7 +1838,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "createGoogleDoc": {
+      case "gdrive_createGoogleDoc": {
         const validation = CreateGoogleDocSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -1926,7 +1926,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "updateGoogleDoc": {
+      case "gdrive_updateGoogleDoc": {
         const validation = UpdateGoogleDocSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -1988,7 +1988,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "createGoogleSheet": {
+      case "gdrive_createGoogleSheet": {
         const validation = CreateGoogleSheetSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -2046,7 +2046,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "addGoogleSheetTab": {
+      case "gdrive_addGoogleSheetTab": {
         const validation = AddGoogleSheetTabSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -2073,19 +2073,27 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "updateGoogleSheet": {
+      case "gdrive_updateGoogleSheet": {
+        console.error("Received updateGoogleSheet arguments:", JSON.stringify(request.params.arguments));
         const validation = UpdateGoogleSheetSchema.safeParse(request.params.arguments);
         if (!validation.success) {
-          return errorResponse(validation.error.errors[0].message);
+          const debugInfo = JSON.stringify(request.params.arguments);
+          return errorResponse(`${validation.error.errors[0].message} (Debug: received ${debugInfo})`);
         }
         const args = validation.data;
+
+        let values = args.data;
+        // Fix for flattening issue: if we receive a 1D array of strings, wrap it to make it 2D
+        if (Array.isArray(values) && values.length > 0 && typeof values[0] === 'string') {
+             values = [values];
+        }
 
         const sheets = google.sheets({ version: 'v4', auth: authClient });
         await sheets.spreadsheets.values.update({
           spreadsheetId: args.spreadsheetId,
           range: args.range,
           valueInputOption: 'RAW',
-          requestBody: { values: args.data }
+          requestBody: { values: values }
         });
 
         return {
@@ -2094,7 +2102,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "getGoogleSheetContent": {
+      case "gdrive_getGoogleSheetContent": {
         const validation = GetGoogleSheetContentSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -2124,7 +2132,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "formatGoogleSheetCells": {
+      case "gdrive_formatGoogleSheetCells": {
         const validation = FormatGoogleSheetCellsSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -2136,7 +2144,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         // Parse the range to get sheet ID and grid range
         const rangeData = await sheets.spreadsheets.get({
           spreadsheetId: args.spreadsheetId,
-          ranges: [args.range],
           fields: 'sheets(properties(sheetId,title))'
         });
 
@@ -2150,8 +2157,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         console.error(`[DEBUG] Found sheet:`, sheet ? JSON.stringify(sheet, null, 2) : 'null');
         
         if (!sheet || sheet.properties?.sheetId === undefined || sheet.properties?.sheetId === null) {
-          console.error(`[DEBUG] Available sheets:`, rangeData.data.sheets?.map(s => s.properties?.title).join(', '));
-          return errorResponse(`Sheet "${sheetName}" not found`);
+          const availableSheets = rangeData.data.sheets?.map(s => s.properties?.title).join(', ');
+          console.error(`[DEBUG] Available sheets:`, availableSheets);
+          return errorResponse(`Sheet "${sheetName}" not found. Available sheets: ${availableSheets}`);
         }
 
         // Parse A1 notation to grid range
@@ -2195,7 +2203,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "formatGoogleSheetText": {
+      case "gdrive_formatGoogleSheetText": {
         const validation = FormatGoogleSheetTextSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -2277,7 +2285,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "formatGoogleSheetNumbers": {
+      case "gdrive_formatGoogleSheetNumbers": {
         const validation = FormatGoogleSheetNumbersSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -2329,7 +2337,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "setGoogleSheetBorders": {
+      case "gdrive_setGoogleSheetBorders": {
         const validation = SetGoogleSheetBordersSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -2387,7 +2395,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "mergeGoogleSheetCells": {
+      case "gdrive_mergeGoogleSheetCells": {
         const validation = MergeGoogleSheetCellsSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -2429,7 +2437,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "addGoogleSheetConditionalFormat": {
+      case "gdrive_addGoogleSheetConditionalFormat": {
         const validation = AddGoogleSheetConditionalFormatSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -2528,7 +2536,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "createGoogleSlides": {
+      case "gdrive_createGoogleSlides": {
         const validation = CreateGoogleSlidesSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -2607,7 +2615,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "updateGoogleSlides": {
+      case "gdrive_updateGoogleSlides": {
         const validation = UpdateGoogleSlidesSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -2780,7 +2788,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "formatGoogleDocText": {
+      case "gdrive_formatGoogleDocText": {
         const validation = FormatGoogleDocTextSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -2860,7 +2868,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "formatGoogleDocParagraph": {
+      case "gdrive_formatGoogleDocParagraph": {
         const validation = FormatGoogleDocParagraphSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -2930,7 +2938,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "getGoogleDocContent": {
+      case "gdrive_getGoogleDocContent": {
         const validation = GetGoogleDocContentSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -3072,7 +3080,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "getGoogleSlidesContent": {
+      case "gdrive_getGoogleSlidesContent": {
         const validation = GetGoogleSlidesContentSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -3132,7 +3140,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "formatGoogleSlidesText": {
+      case "gdrive_formatGoogleSlidesText": {
         const validation = FormatGoogleSlidesTextSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -3223,7 +3231,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "formatGoogleSlidesParagraph": {
+      case "gdrive_formatGoogleSlidesParagraph": {
         const validation = FormatGoogleSlidesParagraphSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -3292,7 +3300,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "styleGoogleSlidesShape": {
+      case "gdrive_styleGoogleSlidesShape": {
         const validation = StyleGoogleSlidesShapeSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -3378,7 +3386,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "setGoogleSlidesBackground": {
+      case "gdrive_setGoogleSlidesBackground": {
         const validation = SetGoogleSlidesBackgroundSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -3418,7 +3426,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "createGoogleSlidesTextBox": {
+      case "gdrive_createGoogleSlidesTextBox": {
         const validation = CreateGoogleSlidesTextBoxSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -3504,7 +3512,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "createGoogleSlidesShape": {
+      case "gdrive_createGoogleSlidesShape": {
         const validation = CreateGoogleSlidesShapeSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
@@ -3572,7 +3580,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case "getFileComments": {
+      case "gdrive_getFileComments": {
         const validation = GetFileCommentsSchema.safeParse(request.params.arguments);
         if (!validation.success) {
           return errorResponse(validation.error.errors[0].message);
