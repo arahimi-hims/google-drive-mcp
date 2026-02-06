@@ -366,6 +366,10 @@ const GetGoogleSheetContentSchema = z.object({
   range: z.string().min(1, "Range is required")
 });
 
+const GetSpreadsheetMetadataSchema = z.object({
+  spreadsheetId: z.string().min(1, "Spreadsheet ID is required")
+});
+
 const FormatGoogleSheetCellsSchema = z.object({
   spreadsheetId: z.string().min(1, "Spreadsheet ID is required"),
   range: z.string().min(1, "Range is required"),
@@ -959,6 +963,17 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         }
       },
       {
+        name: "gdrive_getSpreadsheetMetadata",
+        description: "Get metadata for a Google Sheet, including sheet names and IDs",
+        inputSchema: {
+          type: "object",
+          properties: {
+            spreadsheetId: { type: "string", description: "Spreadsheet ID" }
+          },
+          required: ["spreadsheetId"]
+        }
+      },
+      {
         name: "gdrive_formatGoogleSheetCells",
         description: "Format cells in a Google Sheet (background, borders, alignment)",
         inputSchema: {
@@ -1506,7 +1521,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           supportsAllDrives: true
         });
 
-        const fileList = res.data.files?.map((f: drive_v3.Schema$File) => `${f.name} (${f.mimeType})`).join("\n") || '';
+        const fileList = res.data.files?.map((f: drive_v3.Schema$File) => `${f.name} (${f.mimeType}) [id: ${f.id}]`).join("\n") || '';
         log('Search results', { query: userQuery, resultCount: res.data.files?.length });
 
         let response = `Found ${res.data.files?.length ?? 0} files:\n${fileList}`;
@@ -2123,6 +2138,37 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         } else {
           values.forEach((row, rowIndex) => {
             content += `Row ${rowIndex + 1}: ${row.join(', ')}\n`;
+          });
+        }
+
+        return {
+          content: [{ type: "text", text: content }],
+          isError: false
+        };
+      }
+
+      case "gdrive_getSpreadsheetMetadata": {
+        const validation = GetSpreadsheetMetadataSchema.safeParse(request.params.arguments);
+        if (!validation.success) {
+          return errorResponse(validation.error.errors[0].message);
+        }
+        const args = validation.data;
+
+        const sheets = google.sheets({ version: 'v4', auth: authClient });
+        const response = await sheets.spreadsheets.get({
+          spreadsheetId: args.spreadsheetId
+        });
+
+        const sheetsList = response.data.sheets || [];
+        let content = `Metadata for spreadsheet ${args.spreadsheetId}:\n\n`;
+        
+        if (sheetsList.length === 0) {
+          content += "(no sheets found)";
+        } else {
+          content += `Title: ${response.data.properties?.title}\n`;
+          content += "Sheets:\n";
+          sheetsList.forEach((sheet) => {
+            content += `- ${sheet.properties?.title} (ID: ${sheet.properties?.sheetId})\n`;
           });
         }
 
